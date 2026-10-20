@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A-Learning Training & Nesting Tracker</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;background:#f5f5f7;color:#1d1d1f;min-height:100vh}
+
+  /* Header */
+  .header{background:linear-gradient(135deg,#0f0c29 0%,#302b63 40%,#24243e 70%,#1a4a5e 100%);color:#fff;padding:28px 32px 20px;position:relative}
+  .header h1{font-size:22px;font-weight:700;letter-spacing:-0.3px}
+  .header p{font-size:13px;opacity:0.85;margin-top:4px}
+  .header .badge{display:inline-block;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;margin-left:10px;vertical-align:middle}
+  .header .a-badge{background:linear-gradient(135deg,#0891b2,#22d3ee);border:none;color:#fff}
+  .sheet-link{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:8px 16px;color:#fff;text-decoration:none;font-size:12px;font-weight:600;transition:background 0.2s;white-space:nowrap}
+  .sheet-link:hover{background:rgba(255,255,255,0.25)}
+  .header-actions{position:absolute;right:32px;top:50%;transform:translateY(-50%);display:flex;gap:10px;align-items:center}
+  .updated-info{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:8px 16px;color:#fff;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+
+  /* KPI Row */
+  .kpi-row{display:flex;gap:14px;padding:20px 32px;flex-wrap:wrap}
+  .kpi{background:#fff;border-radius:12px;padding:16px 20px;flex:1;min-width:160px;box-shadow:0 1px 3px rgba(0,0,0,0.06);border:1px solid #e8e8ed}
+  .kpi .label{font-size:11px;font-weight:600;color:#86868b;text-transform:uppercase;letter-spacing:0.5px}
+  .kpi .value{font-size:28px;font-weight:700;margin-top:4px;color:#1d1d1f}
+  .kpi .sub{font-size:11px;color:#86868b;margin-top:2px}
+  .kpi.accent .value{color:#0891b2}
+  .kpi.green .value{color:#34c759}
+  .kpi.blue .value{color:#007aff}
+
+  /* Tab Bar */
+  .tab-bar{display:flex;gap:0;padding:0 32px;border-bottom:1px solid #e8e8ed;background:#fff}
+  .tab-btn{padding:14px 24px;font-size:13px;font-weight:600;color:#86868b;cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all 0.2s}
+  .tab-btn:hover{color:#1d1d1f}
+  .tab-btn.active{color:#1a6b7a;border-bottom-color:#1a6b7a}
+  .tab-content{padding:24px 32px;display:none}
+  .tab-content.active{display:block}
+
+  /* Split Layout */
+  .split-container{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .split-section{min-width:0}
+  .split-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #e8e8ed}
+  .split-header .dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+  .split-header .dot.completed{background:#34c759}
+  .split-header .dot.ongoing{background:#ff9f0a}
+  .split-header h2{font-size:16px;font-weight:700;color:#1d1d1f}
+  .split-header .count{font-size:12px;font-weight:600;padding:2px 10px;border-radius:10px}
+  .split-header .count.completed{background:#e8fbe8;color:#248a3d}
+  .split-header .count.ongoing{background:#fff3e0;color:#c77800}
+
+  /* Batch Card */
+  .batch-grid{display:grid;grid-template-columns:1fr;gap:14px}
+  .batch-card{background:#fff;border-radius:14px;border:1px solid #e8e8ed;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.04);transition:box-shadow 0.2s}
+  .batch-card:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+  .batch-card.completed{border-left:4px solid #34c759}
+  .batch-card.ongoing{border-left:4px solid #ff9f0a}
+  .card-header{padding:14px 16px 10px;border-bottom:1px solid #f0f0f5}
+  .card-header h3{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}
+  .card-header .meta{font-size:10px;color:#86868b;margin-top:3px;display:flex;gap:10px;flex-wrap:wrap}
+  .card-header .meta span{display:inline-flex;align-items:center;gap:3px}
+  .a-learning-tag{background:linear-gradient(135deg,#0891b2,#22d3ee);color:#fff;font-size:8px;font-weight:700;padding:2px 7px;border-radius:10px;letter-spacing:0.3px;text-transform:uppercase;white-space:nowrap}
+
+  /* Status Pill */
+  .status-pill{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;letter-spacing:0.2px}
+  .status-pill.completed{background:#e8fbe8;color:#248a3d}
+  .status-pill.ongoing{background:#fff3e0;color:#c77800}
+  .status-pill.na{background:#f5f5f7;color:#86868b}
+
+  /* Card Body */
+  .card-body{padding:12px 16px 14px}
+  .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .metric{text-align:center;padding:6px 4px;background:#fafafa;border-radius:8px}
+  .metric .mv{font-size:16px;font-weight:700;color:#1d1d1f}
+  .metric .ml{font-size:9px;color:#86868b;font-weight:500;margin-top:2px}
+  .metric.highlight .mv{color:#e04848}
+  .metric.green .mv{color:#34c759}
+  .detail-rows{display:flex;flex-direction:column;gap:4px;margin-top:6px}
+  .detail-row{display:flex;justify-content:space-between;font-size:11px;padding:3px 0;border-bottom:1px solid #f5f5f7}
+  .detail-row:last-child{border-bottom:none}
+  .detail-row .dl{color:#86868b;font-weight:500}
+  .detail-row .dv{font-weight:600;text-align:right;max-width:60%}
+
+  /* Performance Grid */
+  .perf-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px}
+  .perf-item{text-align:center;padding:8px 4px;background:#fafafa;border-radius:8px}
+  .perf-item .pv{font-size:14px;font-weight:700}
+  .perf-item .pl{font-size:8px;color:#86868b;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;margin-top:2px}
+
+  /* Drill-down Button */
+  .drill-btn{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:7px 14px;font-size:11px;font-weight:600;border:1px solid #d1d5db;border-radius:8px;background:#f9fafb;color:#374151;cursor:pointer;transition:all 0.2s;width:100%;justify-content:center}
+  .drill-btn:hover{background:#e5e7eb;border-color:#9ca3af;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+  .drill-btn .icon{font-size:13px}
+  .drill-btn.primary{background:linear-gradient(135deg,#0891b2,#22d3ee);color:#fff;border:none}
+  .drill-btn.primary:hover{opacity:0.9;box-shadow:0 2px 8px rgba(8,145,178,0.3)}
+
+  /* Modal Overlay */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;justify-content:center;align-items:center;padding:20px}
+  .modal-overlay.active{display:flex}
+  .modal{background:#fff;border-radius:16px;max-width:900px;width:100%;max-height:85vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+  .modal-header{padding:20px 24px;border-bottom:1px solid #e8e8ed;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fff;z-index:1}
+  .modal-header h3{font-size:16px;font-weight:700}
+  .modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:#86868b;padding:4px 8px;border-radius:6px}
+  .modal-close:hover{background:#f5f5f7;color:#1d1d1f}
+  .modal-body{padding:20px 24px}
+  .modal-placeholder{text-align:center;padding:40px 20px;color:#86868b}
+  .modal-placeholder .icon{font-size:48px;margin-bottom:12px;opacity:0.3}
+  .modal-placeholder p{font-size:14px;font-weight:500}
+  .modal-placeholder .sub{font-size:12px;margin-top:6px}
+
+  /* Nesting Remarks */
+  .nesting-remark{flex-direction:column;gap:3px;padding:6px 8px;background:#f0f9ff;border-radius:6px;border:1px solid #bae6fd;margin-top:4px}
+  .nesting-remark .dl{font-size:9px;text-transform:uppercase;letter-spacing:0.5px;color:#0369a1}
+  .nesting-remark .dv{max-width:100%;text-align:left;font-weight:500;font-size:10px;color:#0c4a6e;line-height:1.4}
+
+  /* Target vs Achieved table */
+  .kpi-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:8px}
+  .kpi-table th{background:#1a4a5e;color:#fff;font-weight:600;padding:6px 8px;text-align:center;font-size:10px}
+  .kpi-table td{padding:5px 8px;text-align:center;border-bottom:1px solid #f0f0f5}
+  .kpi-table .target-cell{background:#fff3cd;color:#856404;font-weight:700}
+  .kpi-table .achieved-cell{font-weight:600}
+  .kpi-table .above{background:#d4edda;color:#155724}
+  .kpi-table .below{background:#f8d7da;color:#721c24}
+
+  /* Empty */
+  .empty-state{text-align:center;padding:40px 20px;color:#86868b}
+  .empty-state .icon{font-size:36px;margin-bottom:10px;opacity:0.3}
+  .empty-state p{font-size:13px}
+
+  /* Expandable sections */
+  .expandable{max-height:0;overflow:hidden;transition:max-height 0.4s ease}
+  .expandable.open{max-height:2000px}
+
+  /* Agent Table inside modal */
+  .agent-table-wrap{overflow-x:auto;border-radius:10px;border:1px solid #e8e8ed;background:#fff}
+  .agent-table{width:100%;border-collapse:collapse;font-size:11px}
+  .agent-table th{background:#1a4a5e;color:#fff;font-weight:600;padding:8px 6px;text-align:center;white-space:nowrap;font-size:10px}
+  .agent-table th.name-col{text-align:left;min-width:150px}
+  .agent-table td{padding:6px;text-align:center;border-bottom:1px solid #f0f0f5}
+  .agent-table td.name-cell{text-align:left;font-weight:600;white-space:nowrap}
+  .agent-table tr:hover td{background:#f8f9fa}
+
+  /* Responsive */
+  @media(max-width:900px){
+    .split-container{grid-template-columns:1fr}
+  }
+
+  .footer{text-align:center;padding:24px 32px;font-size:11px;color:#86868b;border-top:1px solid #e8e8ed;margin-top:20px}
+
+  /* Post-nesting batch perf card */
+  .batch-perf-card{background:#fff;border-radius:14px;border:1px solid #e8e8ed;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.04);transition:box-shadow 0.2s;margin-bottom:14px}
+  .batch-perf-card:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+  .batch-perf-card.completed{border-left:4px solid #34c759}
+  .batch-perf-card.ongoing{border-left:4px solid #ff9f0a}
+  .batch-perf-header{padding:14px 18px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;user-select:none;transition:background 0.2s}
+  .batch-perf-header:hover{background:#fafafa}
+  .batch-perf-header .left{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .batch-perf-header .batch-name{font-size:14px;font-weight:700;color:#1d1d1f;display:flex;align-items:center;gap:8px}
+  .batch-meta-info{display:flex;gap:5px;flex-wrap:wrap}
+  .batch-meta-info .tag{font-size:9px;font-weight:600;padding:2px 8px;border-radius:10px;letter-spacing:0.2px}
+  .tag-venture{background:#e3f2fd;color:#1565c0}
+  .tag-bpo{background:#f3e5f5;color:#7b1fa2}
+  .tag-domain{background:#e8f5e9;color:#2e7d32}
+  .tag-lob{background:#fff3e0;color:#e65100}
+  .expand-arrow{font-size:16px;color:#86868b;transition:transform 0.3s;flex-shrink:0}
+  .batch-perf-card.expanded .expand-arrow{transform:rotate(180deg)}
+  .batch-perf-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease;padding:0 18px}
+  .batch-perf-card.expanded .batch-perf-body{max-height:3000px;padding:0 18px 18px}
+  .agent-count-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:3px 10px;border-radius:12px;background:#f0f9ff;color:#0369a1;border:1px solid #bae6fd}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>A-Learning Training & Nesting Tracker <span class="badge a-badge">A-Learning Only</span></h1>
+  <p>A-Learning batches from Training & Nesting Data sheet &bull; Last updated: 20 Oct 2026, 11:39 PKT</p>
+  <div class="header-actions">
+    <span class="updated-info">&#128337; Updated: 20 Oct 2026, 11:39 PKT</span>
+    <a class="sheet-link" href="https://alidocs.dingtalk.com/i/nodes/Gl6Pm2Db8D370q7PInLeRXqYJxLq0Ee4" target="_blank">Open Source Sheet &rarr;</a>
+  </div>
+</div>
+
+<div class="kpi-row" id="kpiRow"></div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="training">Training Status</button>
+  <button class="tab-btn" data-tab="nesting">Nesting Status</button>
+  <button class="tab-btn" data-tab="postnest">Post-Nesting Status</button>
+</div>
+
+<div class="tab-content active" id="tab-training"></div>
+<div class="tab-content" id="tab-nesting"></div>
+<div class="tab-content" id="tab-postnest"></div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">Details</h3>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="footer">
+  Data sourced from AliDocs &mdash; Training & Nesting Data sheet &bull; Auto-refreshed daily at 11:00 AM PKT &bull; Dashboard by QoderWork
+</div>
+
+
+<script>
+const batches = [{"batchId": "PK PSC LMS Batch-67", "aLearning": true, "bpo": "Tribe", "venture": "PK", "trainer": "Muhammad Saud Ayub", "startHC": 11, "endHC": null, "domain": "PS", "lob": "LC/IB", "trainStart": 46311, "trainEnd": 46322, "trainStatus": "On-going", "nestStart": 46323, "nestEnd": null, "nestStartHC": null, "nestEndHC": null, "nestStatus": null, "nestRemarks": null, "nestGrad": null, "extNestCount": null, "extNestGrad": null, "remarks": null, "tsatChat": null, "tsatVoice": null, "sop": null, "aht": null, "qa": null, "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "PK CSC LMS Batch-66", "aLearning": true, "bpo": "Tribe", "venture": "PK", "trainer": "Hamza Ahmed Butt", "startHC": 11, "endHC": null, "domain": "CS", "lob": "LC/IB", "trainStart": 46311, "trainEnd": 46322, "trainStatus": "On-going", "nestStart": 46323, "nestEnd": null, "nestStartHC": null, "nestEndHC": null, "nestStatus": null, "nestRemarks": null, "nestGrad": null, "extNestCount": null, "extNestGrad": null, "remarks": null, "tsatChat": null, "tsatVoice": null, "sop": null, "aht": null, "qa": null, "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "PK LLM CSC LMS-65", "aLearning": true, "bpo": "Tribe", "venture": "BD", "trainer": "Muhammad Saud Ayub", "startHC": 1, "endHC": 1, "domain": "CS", "lob": "LC", "trainStart": 46310, "trainEnd": 46321, "trainStatus": "On-going", "nestStart": 46322, "nestEnd": 46326, "nestStartHC": null, "nestEndHC": null, "nestStatus": null, "nestRemarks": null, "nestGrad": null, "extNestCount": null, "extNestGrad": null, "remarks": null, "tsatChat": null, "tsatVoice": null, "sop": null, "aht": null, "qa": null, "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "PK PSC LMS Batch-64", "aLearning": true, "bpo": "Tribe", "venture": "PK", "trainer": "Muhammad Saud Ayub", "startHC": 3, "endHC": 3, "domain": "PS", "lob": "LC/IB", "trainStart": 46305, "trainEnd": 46316, "trainStatus": "On-going", "nestStart": 46317, "nestEnd": 46322, "nestStartHC": "N/A", "nestEndHC": "N/A", "nestStatus": "N/A", "nestRemarks": "Training Discountinue due to new hiring", "nestGrad": "N/A", "extNestCount": "N/A", "extNestGrad": "N/A", "remarks": "Training Discountinue due to new hiring", "tsatChat": "N/A", "tsatVoice": "N/A", "sop": "N/A", "aht": "N/A", "qa": "N/A", "remarks2": "N/A", "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "PK PSC LMS Batch-63", "aLearning": true, "bpo": "Ibex", "venture": "PK", "trainer": "Insha Khan", "startHC": 2, "endHC": 2, "domain": "PS", "lob": "LC", "trainStart": 46295, "trainEnd": 46306, "trainStatus": "Completed", "nestStart": 46307, "nestEnd": 46312, "nestStartHC": 2, "nestEndHC": null, "nestStatus": "On-going", "nestRemarks": null, "nestGrad": null, "extNestCount": null, "extNestGrad": null, "remarks": null, "tsatChat": null, "tsatVoice": null, "sop": null, "aht": null, "qa": null, "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "BD CSC LMS Batch-62", "aLearning": true, "bpo": "Digicon", "venture": "BD", "trainer": "Soneya Akter", "startHC": 11, "endHC": 9, "domain": "CS", "lob": "LC/IB", "trainStart": 46295, "trainEnd": 46306, "trainStatus": "Completed", "nestStart": 46307, "nestEnd": 46312, "nestStartHC": 9, "nestEndHC": 9, "nestStatus": "On-going", "nestRemarks": "Nesting is going on", "nestGrad": null, "extNestCount": null, "extNestGrad": null, "remarks": null, "tsatChat": null, "tsatVoice": null, "sop": null, "aht": null, "qa": null, "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "PK IR CSC LMS Batch-61", "aLearning": true, "bpo": "In-house", "venture": "PK", "trainer": "Noel Ansar", "startHC": 2, "endHC": 2, "domain": "CS", "lob": "CS IR", "trainStart": 46287, "trainEnd": 46304, "trainStatus": "Completed", "nestStart": 46307, "nestEnd": 46312, "nestStartHC": null, "nestEndHC": null, "nestStatus": null, "nestRemarks": "Nesting is going on", "nestGrad": null, "extNestCount": null, "extNestGrad": null, "remarks": null, "tsatChat": null, "tsatVoice": null, "sop": null, "aht": null, "qa": null, "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "PK PSC LMS Batch-60", "aLearning": true, "bpo": "Ibex", "venture": "PK", "trainer": "Insha Khan", "startHC": 3, "endHC": 3, "domain": "PS", "lob": "LC", "trainStart": 46282, "trainEnd": 46289, "trainStatus": "Completed", "nestStart": 46290, "nestEnd": 46295, "nestStartHC": 2, "nestEndHC": 2, "nestStatus": "Completed", "nestRemarks": "Nesting completed for 2 agents. 1 Agent is back to CS LOB", "nestGrad": 1, "extNestCount": "N/A", "extNestGrad": "N/A", "remarks": "Training & Nesting has been completed", "tsatChat": 0.904, "tsatVoice": "N/A", "sop": 0.9331, "aht": "LC - 8.3 Mins", "qa": "LC : 16.66%", "remarks2": "Missing Personalization\r\nComplaint Not Forwarded\r\nHold procedure not followed\r\nIncomplete Resolution \r\nCancellation SOP unclear\r\nGenuine compliments missing", "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "BD PSC LMS Batch-59", "aLearning": true, "bpo": "Digicon", "venture": "BD", "trainer": "Soneya Akter", "startHC": 7, "endHC": 7, "domain": "PS", "lob": "LC/IB", "trainStart": 46282, "trainEnd": 46293, "trainStatus": "Completed", "nestStart": 46294, "nestEnd": 46299, "nestStartHC": 7, "nestEndHC": 6, "nestStatus": "Completed", "nestRemarks": "Extended Nesting of 1 agent is going on", "nestGrad": 0.9, "extNestCount": 1, "extNestGrad": null, "remarks": "The trainee passed but had extended nesting due to 0 (attendance and SOP) weightage.", "tsatChat": 0.9417, "tsatVoice": 0.9444, "sop": 0.8953, "aht": "LC: 7:39 mint\r\nIB 05:00 mint", "qa": "LC:0%\r\nIB: 30%", "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "LK PSC LMS Batch-58", "aLearning": true, "bpo": "KBPO", "venture": "LK", "trainer": "Fathima Saliha", "startHC": 5, "endHC": 5, "domain": "PS", "lob": "LC/IB", "trainStart": 46282, "trainEnd": 46290, "trainStatus": "Completed", "nestStart": "N/A", "nestEnd": "N/A", "nestStartHC": "N/A", "nestEndHC": "N/A", "nestStatus": "N/A", "nestRemarks": "Cross LOB training: Nesting is not guided", "nestGrad": null, "extNestCount": null, "extNestGrad": null, "remarks": "Cross LOB training: Nesting is not guided", "tsatChat": "N/A", "tsatVoice": "N/A", "sop": "N/A", "aht": "N/A", "qa": "N/A", "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "NP IR CSC LMS Batch-57", "aLearning": true, "bpo": "In-house", "venture": "NP", "trainer": "Noel Ansar", "startHC": 1, "endHC": 1, "domain": "CS", "lob": "CS IR", "trainStart": 46286, "trainEnd": 46308, "trainStatus": "Completed", "nestStart": 46309, "nestEnd": 46316, "nestStartHC": null, "nestEndHC": null, "nestStatus": "On-going", "nestRemarks": "Training is going on", "nestGrad": null, "extNestCount": null, "extNestGrad": null, "remarks": null, "tsatChat": null, "tsatVoice": null, "sop": null, "aht": null, "qa": null, "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "LK IR CSC LMS Batch-56", "aLearning": true, "bpo": "In-house", "venture": "LK", "trainer": "Noel Ansar", "startHC": 2, "endHC": 2, "domain": "PS", "lob": "CS IR", "trainStart": 46283, "trainEnd": 46308, "trainStatus": "Completed", "nestStart": 46309, "nestEnd": 46316, "nestStartHC": null, "nestEndHC": null, "nestStatus": "On-going", "nestRemarks": "Training is going on", "nestGrad": null, "extNestCount": null, "extNestGrad": null, "remarks": "Training is going on", "tsatChat": null, "tsatVoice": null, "sop": null, "aht": null, "qa": null, "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "PK PSC LMS Batch-55", "aLearning": true, "bpo": "Tribe", "venture": "PK", "trainer": "Muhammad Saud Ayub", "startHC": 8, "endHC": 8, "domain": "PS", "lob": "LC/IB", "trainStart": 46282, "trainEnd": 46289, "trainStatus": "Completed", "nestStart": "N/A", "nestEnd": "N/A", "nestStartHC": "N/A", "nestEndHC": "N/A", "nestStatus": "N/A", "nestRemarks": "Cross LOB training: Nesting is not guided", "nestGrad": null, "extNestCount": null, "extNestGrad": null, "remarks": "The training has been completed; however, nesting has not started, as per the instructions.", "tsatChat": "N/A", "tsatVoice": "N/A", "sop": "N/A", "aht": "N/A", "qa": "N/A", "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "NP PSC LMS Batch-54", "aLearning": true, "bpo": "In-house", "venture": "NP", "trainer": "Noel Ansar", "startHC": 1, "endHC": 1, "domain": "PS", "lob": "LC", "trainStart": 46266, "trainEnd": 46279, "trainStatus": "Completed", "nestStart": 46280, "nestEnd": 46284, "nestStartHC": 1, "nestEndHC": 1, "nestStatus": "Completed", "nestRemarks": "Nesting is completed", "nestGrad": 0.94, "extNestCount": 0, "extNestGrad": "N/A", "remarks": " Training & Nesting been completed; And the agent has successfully been graduated", "tsatChat": 0.83, "tsatVoice": "N/A", "sop": 0.71, "aht": "7:40 mins", "qa": 0.2, "remarks2": "All nesting targets has achived except SOP compliance. \r\nFeedback provided & agent is live on floor now", "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "PK CSC LMS Batch-53", "aLearning": true, "bpo": "Tribe", "venture": "PK", "trainer": "Muhammad Saud Ayub", "startHC": 12, "endHC": 10, "domain": "CS", "lob": "LC/IB", "trainStart": 46255, "trainEnd": 46267, "trainStatus": "Completed", "nestStart": 46268, "nestEnd": 46277, "nestStartHC": 10, "nestEndHC": 9, "nestStatus": "Completed", "nestRemarks": "All agents has cleared Nesting Phase", "nestGrad": 1, "extNestCount": 0, "extNestGrad": "N/A", "remarks": "2 agents left training due to personal issues", "tsatChat": 0.9, "tsatVoice": 0.95, "sop": 0.86, "aht": "LC-9 Mins IB-5 Mins", "qa": "LC 8% - IB 35%", "remarks2": "Missing Personalization\r\nComplaint Not Forwarded\r\nMissing Complaint Timeline/Tracker Guidance\r\nIncomplete Resolution\r\nFCR Not Created\r\nIncorrect Delivery Timeline Given\r\nIncorrect FCR Created", "tsatChat30": 0.88, "tsatVoice30": 0.93, "sop30": 0.9, "aht30": "Chat: 9.98\r\r\nVoice:4.96\r\r\n", "qa30": "@Naeem, Majid(Majid Naeem)Please update batch's QA avg", "remarks30": null, "postNest": {"tsatChat30": 0.88, "tsatVoice30": 0.93, "sop30": 0.9, "aht30": "Chat: 9.98\r\r\nVoice:4.96\r\r\n", "qa30": "@Naeem, Majid(Majid Naeem)Please update batch's QA avg"}}];
+const agentPerfData = {"weeks": [36, 37, 38, 39], "batchGroups": [{"batchId": "PK CSC LMS Batch-53", "venture": "PK", "bpo": "Tribe", "domain": "CS", "lob": "LC/IB", "chatAgents": [{"name": "Aiman", "aht_w36": 10.5, "aht_w37": 9.1, "aht_w38": 10.7, "aht_w39": 10.0, "tsat_w36": 83.0, "tsat_w37": 83.0, "tsat_w38": 94.0, "tsat_w39": 92.0, "sop_w36": 77.0, "sop_w37": 92.0, "sop_w38": 92.0, "sop_w39": 88.0, "aht_target": 6.7, "tsat_target": 0.86, "sop_target": 0.9}, {"name": "Ayan", "aht_w36": 11.0, "aht_w37": 11.6, "aht_w38": 10.2, "aht_w39": 10.2, "tsat_w36": 82.0, "tsat_w37": 89.0, "tsat_w38": 90.0, "tsat_w39": 85.0, "sop_w36": 75.0, "sop_w37": 89.0, "sop_w38": 86.0, "sop_w39": 85.0, "aht_target": 6.7, "tsat_target": 0.86, "sop_target": 0.9}, {"name": "Hasnain Ali Shaikh", "aht_w36": 11.0, "aht_w37": 8.9, "aht_w38": 8.3, "aht_w39": 8.3, "tsat_w36": 100.0, "tsat_w37": 97.0, "tsat_w38": 90.0, "tsat_w39": 93.0, "sop_w36": 92.0, "sop_w37": 97.0, "sop_w38": 92.0, "sop_w39": 97.0, "aht_target": 6.7, "tsat_target": 0.86, "sop_target": 0.9}, {"name": "Maaz Ali", "aht_w36": 11.0, "aht_w37": 10.5, "aht_w38": 9.6, "aht_w39": 11.6, "tsat_w36": 92.0, "tsat_w37": 88.0, "tsat_w38": 91.0, "tsat_w39": 86.0, "sop_w36": 80.0, "sop_w37": 90.0, "sop_w38": 95.0, "sop_w39": 91.0, "aht_target": 6.7, "tsat_target": 0.86, "sop_target": 0.9}, {"name": "Shayan Ahmed Khatri", "aht_w36": 12.4, "aht_w37": 10.7, "aht_w38": 10.5, "aht_w39": 10.6, "tsat_w36": 64.0, "tsat_w37": 90.0, "tsat_w38": 91.0, "tsat_w39": 93.0, "sop_w36": 90.0, "sop_w37": 97.0, "sop_w38": 97.0, "sop_w39": 94.0, "aht_target": 6.7, "tsat_target": 0.86, "sop_target": 0.9}, {"name": "Muhammad Fahad Zeb", "aht_w36": 7.5, "aht_w38": 8.7, "aht_w39": 6.6, "tsat_w36": 82.0, "tsat_w38": 79.0, "tsat_w39": 87.0, "sop_w36": 82.0, "sop_w38": 96.0, "sop_w39": 94.0, "aht_target": 6.7, "tsat_target": 0.86, "sop_target": 0.9}], "voiceAgents": [{"name": "Ayesha-Tribe", "aht_w36": 4.77, "aht_w37": 4.45, "aht_w38": 4.15, "tsat_w36": 0.8433, "tsat_w37": 0.9417, "tsat_w38": 0.9433, "aht_target": 4.7, "tsat_target": 0.92}, {"name": "Abeel-Tribe", "aht_w36": 6.27, "aht_w37": 4.83, "aht_w38": 4.5, "tsat_w36": 0.9667, "tsat_w37": 0.9267, "tsat_w38": 0.97, "aht_target": 4.7, "tsat_target": 0.92}, {"name": "Salman-Tribe", "aht_w36": 5.77, "aht_w37": 4.78, "aht_w38": 5.14, "tsat_w36": 0.9233, "tsat_w37": 0.945, "tsat_w38": 0.93, "aht_target": 4.7, "tsat_target": 0.92}], "chatCount": 6, "voiceCount": 3}]};
+
+/* ---- Helpers ---- */
+function excelDate(serial){
+  if(!serial || serial === 'N/A' || typeof serial === 'string') return serial || '\u2014';
+  const d = new Date((serial - 25569) * 86400 * 1000);
+  return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+}
+function pct(v){ if(v===null||v===undefined||v==='N/A'||v==='\u2014') return '\u2014'; if(typeof v==='number') return (v<=1?(v*100).toFixed(1):v.toFixed(1))+'%'; return v; }
+function statusPill(s){
+  if(!s||s==='\u2014') return '<span class="status-pill na">\u2014</span>';
+  const sl=s.toLowerCase().replace(/[^a-z]/g,'');
+  if(sl==='completed') return '<span class="status-pill completed">'+s+'</span>';
+  if(sl.includes('ongoing')||sl.includes('on-going')) return '<span class="status-pill ongoing">'+s+'</span>';
+  return '<span class="status-pill na">'+s+'</span>';
+}
+function fmt(v,fb){ return (v===null||v===undefined||v==='') ? (fb||'\u2014') : v; }
+function isNA(v){ return v===null||v===undefined||v===''||v==='N/A'||v==='\u2014'; }
+function isOngoing(s){ return s && (s.toLowerCase().includes('ongoing')||s.toLowerCase().includes('on-going')); }
+
+/* ---- Modal ---- */
+function openModal(title, bodyHtml){
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = bodyHtml;
+  document.getElementById('modalOverlay').classList.add('active');
+}
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('active');
+}
+
+/* ---- KPIs ---- */
+function renderKPIs(){
+  const total = batches.length;
+  const tc = batches.filter(b=>b.trainStatus==='Completed').length;
+  const to = batches.filter(b=>isOngoing(b.trainStatus)).length;
+  const totalTrainees = batches.reduce((s,b)=>s+(typeof b.startHC==='number'?b.startHC:0),0);
+  const totalCompleted = batches.reduce((s,b)=>s+(typeof b.endHC==='number'?b.endHC:0),0);
+  const nc = batches.filter(b=>b.nestStatus==='Completed').length;
+  const no = batches.filter(b=>isOngoing(b.nestStatus)).length;
+  document.getElementById('kpiRow').innerHTML = `
+    <div class="kpi accent"><div class="label">A-Learning Batches</div><div class="value">${total}</div><div class="sub">${tc} completed, ${to} ongoing</div></div>
+    <div class="kpi blue"><div class="label">Total Trainees</div><div class="value">${totalTrainees}</div><div class="sub">${totalCompleted} completed training</div></div>
+    <div class="kpi green"><div class="label">Nesting Completed</div><div class="value">${nc}</div><div class="sub">${no} ongoing</div></div>
+    <div class="kpi"><div class="label">Post-Nesting Data</div><div class="value">${batches.filter(b=>b.postNest).length}</div><div class="sub">30-day performance tracking</div></div>
+  `;
+}
+
+/* ---- Shared: Batch card for Training ---- */
+function trainCard(b){
+  const ongoing = isOngoing(b.trainStatus);
+  const cls = ongoing ? 'ongoing' : 'completed';
+  const sa = typeof b.startHC==='number', ea = typeof b.endHC==='number';
+  const attrition = (sa && ea) ? b.startHC - b.endHC : '\u2014';
+  const attritionPct = (sa && ea && b.startHC>0) ? ((b.startHC-b.endHC)/b.startHC*100).toFixed(0)+'%' : '\u2014';
+  let h = `<div class="batch-card ${cls}">
+    <div class="card-header">
+      <h3>${b.batchId} <span class="a-learning-tag">A-Learning</span></h3>
+      <div class="meta"><span>${b.venture||'\u2014'}</span><span>${b.bpo||'\u2014'}</span><span>${b.domain||'\u2014'} / ${b.lob||'\u2014'}</span><span>Trainer: ${b.trainer||'\u2014'}</span></div>
+    </div>
+    <div class="card-body">
+      <div class="metric-grid">
+        <div class="metric"><div class="mv">${b.startHC||'\u2014'}</div><div class="ml">Start HC</div></div>
+        <div class="metric"><div class="mv">${fmt(b.endHC)}</div><div class="ml">End HC</div></div>
+        <div class="metric ${attrition>0?'highlight':'green'}"><div class="mv">${attrition}</div><div class="ml">Attrition (${attritionPct})</div></div>
+        <div class="metric"><div class="mv">${statusPill(b.trainStatus)}</div><div class="ml">Status</div></div>
+      </div>
+      <div class="detail-rows">
+        <div class="detail-row"><span class="dl">Training Period</span><span class="dv">${excelDate(b.trainStart)} \u2014 ${excelDate(b.trainEnd)}</span></div>
+        ${b.remarks?`<div class="detail-row"><span class="dl">Remarks</span><span class="dv">${b.remarks}</span></div>`:''}
+      </div>`;
+  if(ongoing){
+    h += `<button class="drill-btn" onclick="openModal('${b.batchId} — Daily Quiz Results','<div class=\\\'modal-placeholder\\\'><div class=\\\'icon\\\'>&#128221;</div><p><strong>Daily Quiz Results</strong></p><div class=\\\'sub\\\'>Data source will be connected from the online quiz sheet.<br>Share the sheet link to enable this view.</div></div>')"><span class="icon">&#128221;</span> View Daily Quiz Results</button>`;
+  } else {
+    h += `<button class="drill-btn primary" onclick="openModal('${b.batchId} — Assessment Results','<div class=\\\'modal-placeholder\\\'><div class=\\\'icon\\\'>&#127942;</div><p><strong>Assessment Results</strong></p><div class=\\\'sub\\\'>Grand Quiz, Product Assessment & Communication Assessment<br>agent-level results will appear here once the data sheet is shared.</div></div>')"><span class="icon">&#127942;</span> View Assessment Results</button>`;
+  }
+  h += '</div></div>';
+  return h;
+}
+
+/* ---- Shared: Batch card for Nesting ---- */
+function nestCard(b, idx){
+  const ongoing = isOngoing(b.nestStatus);
+  const completed = b.nestStatus === 'Completed';
+  const cls = ongoing ? 'ongoing' : (completed ? 'completed' : '');
+  const hasNesting = !isNA(b.nestStatus);
+  const nsa = typeof b.nestStartHC==='number', nea = typeof b.nestEndHC==='number';
+  const nestAttrition = (nsa && nea) ? b.nestStartHC - b.nestEndHC : '\u2014';
+  const nestGradDisplay = (b.nestGrad!==null && b.nestGrad!==undefined && b.nestGrad!=='N/A') ? pct(b.nestGrad) : '\u2014';
+
+  let h = `<div class="batch-card ${cls}">
+    <div class="card-header">
+      <h3>${b.batchId} <span class="a-learning-tag">A-Learning</span></h3>
+      <div class="meta"><span>${b.venture||'\u2014'}</span><span>${b.bpo||'\u2014'}</span><span>${b.domain||'\u2014'}</span></div>
+    </div>
+    <div class="card-body">
+      <div class="metric-grid">
+        <div class="metric"><div class="mv">${fmt(b.nestStartHC)}</div><div class="ml">Nest Start HC</div></div>
+        <div class="metric"><div class="mv">${fmt(b.nestEndHC)}</div><div class="ml">Nest End HC</div></div>
+        <div class="metric"><div class="mv">${statusPill(b.nestStatus)}</div><div class="ml">Status</div></div>
+        <div class="metric ${completed?'green':''}"><div class="mv">${nestGradDisplay}</div><div class="ml">Graduation %</div></div>
+      </div>
+      <div class="detail-rows">
+        <div class="detail-row"><span class="dl">Nesting Period</span><span class="dv">${excelDate(b.nestStart)} \u2014 ${excelDate(b.nestEnd)}</span></div>
+        <div class="detail-row"><span class="dl">Drop-offs</span><span class="dv">${nestAttrition}</span></div>
+        ${b.nestRemarks ? `<div class="detail-row nesting-remark"><span class="dl">Nesting Remarks</span><span class="dv">${b.nestRemarks}</span></div>` : ''}
+      </div>`;
+
+  if(ongoing){
+    // Ongoing: Show AHT & TSAT targets, button for agent details
+    h += `<div style="margin-top:8px;font-size:10px;font-weight:600;color:#86868b;text-transform:uppercase;letter-spacing:0.3px">Nesting Performance</div>
+    <div class="perf-grid" style="grid-template-columns:1fr 1fr">
+      <div class="perf-item"><div class="pv">${pct(b.tsatChat)}</div><div class="pl">TSAT Chat</div></div>
+      <div class="perf-item"><div class="pv" style="font-size:11px">${fmt(b.aht)}</div><div class="pl">AHT</div></div>
+    </div>
+    <button class="drill-btn" onclick="openNestAgentModal(${idx},'ongoing')"><span class="icon">&#128100;</span> Agent-Level AHT & TSAT</button>`;
+  } else if(completed){
+    // Completed: Show all KPIs with Target vs Achieved
+    h += `<div style="margin-top:8px;font-size:10px;font-weight:600;color:#86868b;text-transform:uppercase;letter-spacing:0.3px">Nesting KPIs — Target vs Achieved</div>
+    <table class="kpi-table">
+      <thead><tr><th>KPI</th><th>Target</th><th>Achieved</th></tr></thead>
+      <tbody>
+        <tr><td style="text-align:left;font-weight:600">TSAT Chat</td><td class="target-cell">85%</td><td class="achieved-cell ${b.tsatChat>=0.85?'above':'below'}">${pct(b.tsatChat)}</td></tr>
+        <tr><td style="text-align:left;font-weight:600">TSAT Voice</td><td class="target-cell">90%</td><td class="achieved-cell ${b.tsatVoice>=0.90?'above':'below'}">${pct(b.tsatVoice)}</td></tr>
+        <tr><td style="text-align:left;font-weight:600">SOP Compliance</td><td class="target-cell">85%</td><td class="achieved-cell ${b.sop>=0.85?'above':'below'}">${pct(b.sop)}</td></tr>
+        <tr><td style="text-align:left;font-weight:600">AHT</td><td class="target-cell">\u2014</td><td class="achieved-cell" style="font-size:10px">${fmt(b.aht)}</td></tr>
+        <tr><td style="text-align:left;font-weight:600">QA Deficient</td><td class="target-cell">&lt;20%</td><td class="achieved-cell">${fmt(b.qa)}</td></tr>
+      </tbody>
+    </table>
+    <button class="drill-btn primary" onclick="openNestAgentModal(${idx},'completed')"><span class="icon">&#128200;</span> Agent-Level KPI Details</button>`;
+  } else {
+    h += `<div class="empty-state" style="padding:16px"><p style="font-size:11px">No nesting data for this batch</p></div>`;
+  }
+  h += '</div></div>';
+  return h;
+}
+
+function openNestAgentModal(idx, type){
+  const b = batches[idx];
+  let html = '';
+  if(type === 'ongoing'){
+    html = `<div class="modal-placeholder"><div class="icon">&#128100;</div><p><strong>Agent-Level Performance (Ongoing)</strong></p><div class="sub">AHT and TSAT at agent level for ${b.batchId}<br>Data will be populated once the nesting performance sheet is shared.</div></div>
+    <table class="agent-table" style="margin-top:16px"><thead><tr><th class="name-col">Agent Name</th><th>AHT (Target)</th><th>AHT (Achieved)</th><th>TSAT (Target)</th><th>TSAT (Achieved)</th></tr></thead>
+    <tbody><tr><td colspan="5" style="text-align:center;color:#86868b;padding:20px">Agent data will appear here once the source sheet is connected.</td></tr></tbody></table>`;
+  } else {
+    html = `<div class="modal-placeholder"><div class="icon">&#128200;</div><p><strong>Agent-Level KPI Details (Completed)</strong></p><div class="sub">AHT, TSAT, SOP Compliance & QA at agent level for ${b.batchId}<br>Data will be populated once the nesting results sheet is shared.</div></div>
+    <table class="agent-table" style="margin-top:16px"><thead><tr><th class="name-col">Agent Name</th><th>AHT</th><th>TSAT Chat</th><th>TSAT Voice</th><th>SOP</th><th>QA</th></tr></thead>
+    <tbody><tr><td colspan="6" style="text-align:center;color:#86868b;padding:20px">Agent-level KPI data will appear here once the source sheet is connected.</td></tr></tbody></table>`;
+  }
+  openModal(b.batchId + ' — ' + (type==='ongoing' ? 'Ongoing Nesting Performance' : 'Completed Nesting KPIs'), html);
+}
+
+/* ---- Post-Nesting Cards ---- */
+function postNestCard(b, idx){
+  const ongoing = isOngoing(b.trainStatus) || isOngoing(b.nestStatus);
+  const completed = b.nestStatus === 'Completed' && b.trainStatus === 'Completed';
+  const cls = ongoing ? 'ongoing' : (completed ? 'completed' : 'completed');
+  const p = b.postNest;
+
+  let h = `<div class="batch-perf-card ${cls}" id="pn-${idx}">
+    <div class="batch-perf-header" onclick="togglePN(${idx})">
+      <div class="left">
+        <div class="batch-name">${b.batchId} <span class="a-learning-tag">A-Learning</span></div>
+        <div class="batch-meta-info">
+          ${b.venture?`<span class="tag tag-venture">${b.venture}</span>`:''}
+          ${b.bpo?`<span class="tag tag-bpo">${b.bpo}</span>`:''}
+          ${b.domain?`<span class="tag tag-domain">${b.domain}</span>`:''}
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        ${statusPill(ongoing ? 'Ongoing' : 'Completed')}
+        <span class="expand-arrow">&#9660;</span>
+      </div>
+    </div>
+    <div class="batch-perf-body">`;
+
+  if(ongoing){
+    // Ongoing: Show batch summary + button for weekly agent performance
+    h += `<div style="padding-top:14px">
+      <div style="font-size:10px;font-weight:600;color:#86868b;text-transform:uppercase;letter-spacing:0.3px;margin-bottom:8px">Current Batch Status</div>
+      <div class="perf-grid">
+        <div class="perf-item"><div class="pv">${pct(b.tsatChat)}</div><div class="pl">TSAT Chat</div></div>
+        <div class="perf-item"><div class="pv">${pct(b.tsatVoice)}</div><div class="pl">TSAT Voice</div></div>
+        <div class="perf-item"><div class="pv">${pct(b.sop)}</div><div class="pl">SOP</div></div>
+        <div class="perf-item"><div class="pv" style="font-size:11px">${fmt(b.aht)}</div><div class="pl">AHT</div></div>
+        <div class="perf-item"><div class="pv">${fmt(b.qa)}</div><div class="pl">QA</div></div>
+      </div>
+      <button class="drill-btn" onclick="openModal('${b.batchId} — Weekly Agent Performance','<div class=\\\'modal-placeholder\\\'><div class=\\\'icon\\\'>&#128200;</div><p><strong>Weekly Individual Performance</strong></p><div class=\\\'sub\\\'>Week-by-week agent performance for ${b.batchId}<br>AHT, TSAT, SOP Compliance at agent level.<br>Data will be populated once the performance sheet is shared.</div></div>')"><span class="icon">&#128200;</span> View Weekly Agent Performance</button>
+    </div>`;
+  } else {
+    // Completed: Show batch averages
+    if(p && Object.keys(p).length){
+      h += `<div style="padding-top:14px">
+        <div style="font-size:10px;font-weight:600;color:#86868b;text-transform:uppercase;letter-spacing:0.3px;margin-bottom:8px">30-Day Post-Nesting Averages</div>
+        <table class="kpi-table">
+          <thead><tr><th>KPI</th><th>Target</th><th>Batch Average</th></tr></thead>
+          <tbody>
+            <tr><td style="text-align:left;font-weight:600">TSAT Chat</td><td class="target-cell">85%</td><td class="achieved-cell ${(p.tsatChat30||0)>=0.85?'above':'below'}">${pct(p.tsatChat30)}</td></tr>
+            <tr><td style="text-align:left;font-weight:600">TSAT Voice</td><td class="target-cell">90%</td><td class="achieved-cell ${(p.tsatVoice30||0)>=0.90?'above':'below'}">${pct(p.tsatVoice30)}</td></tr>
+            <tr><td style="text-align:left;font-weight:600">SOP Compliance</td><td class="target-cell">85%</td><td class="achieved-cell ${(p.sop30||0)>=0.85?'above':'below'}">${pct(p.sop30)}</td></tr>
+            <tr><td style="text-align:left;font-weight:600">AHT</td><td class="target-cell">\u2014</td><td class="achieved-cell" style="font-size:10px">${fmt(p.aht30)}</td></tr>
+            <tr><td style="text-align:left;font-weight:600">QA Deficient</td><td class="target-cell">&lt;20%</td><td class="achieved-cell">${fmt(p.qa30)}</td></tr>
+          </tbody>
+        </table>
+        <button class="drill-btn primary" onclick="openPostNestAgentModal(${idx})"><span class="icon">&#128100;</span> Agent-Level Details</button>
+      </div>`;
+    } else {
+      h += `<div style="padding-top:14px">
+        <div style="font-size:10px;font-weight:600;color:#86868b;text-transform:uppercase;letter-spacing:0.3px;margin-bottom:8px">Nesting Completed — Awaiting 30-Day Data</div>
+        <div class="detail-rows">
+          <div class="detail-row"><span class="dl">Nesting Ended</span><span class="dv">${excelDate(b.nestEnd)}</span></div>
+          <div class="detail-row"><span class="dl">30-Day Check Date</span><span class="dv">${excelDate(typeof b.nestEnd==='number'?b.nestEnd+30:'\u2014')}</span></div>
+          <div class="detail-row"><span class="dl">Graduated HC</span><span class="dv">${fmt(b.nestEndHC)}</span></div>
+        </div>
+        <div class="perf-grid" style="margin-top:8px">
+          <div class="perf-item"><div class="pv" style="color:#c7c7cc">\u2014</div><div class="pl">TSAT Chat</div></div>
+          <div class="perf-item"><div class="pv" style="color:#c7c7cc">\u2014</div><div class="pl">TSAT Voice</div></div>
+          <div class="perf-item"><div class="pv" style="color:#c7c7cc">\u2014</div><div class="pl">SOP</div></div>
+          <div class="perf-item"><div class="pv" style="color:#c7c7cc">\u2014</div><div class="pl">AHT</div></div>
+          <div class="perf-item"><div class="pv" style="color:#c7c7cc">\u2014</div><div class="pl">QA</div></div>
+        </div>
+      </div>`;
+    }
+  }
+  h += '</div></div>';
+  return h;
+}
+
+function openPostNestAgentModal(idx){
+  const b = batches[idx];
+  // Check if agent perf data is available for this batch
+  const group = agentPerfData.batchGroups.find(g => g.batchId === b.batchId);
+  let html = '';
+  if(group && (group.chatAgents.length || group.voiceAgents.length)){
+    html = renderAgentTables(group);
+  } else {
+    html = `<div class="modal-placeholder"><div class="icon">&#128100;</div><p><strong>Agent-Level Details</strong></p><div class="sub">Individual agent performance for ${b.batchId}<br>Data will be populated once the agent performance sheet is shared.</div></div>
+    <table class="agent-table" style="margin-top:16px"><thead><tr><th class="name-col">Agent Name</th><th>AHT</th><th>TSAT Chat</th><th>TSAT Voice</th><th>SOP</th><th>QA</th></tr></thead>
+    <tbody><tr><td colspan="6" style="text-align:center;color:#86868b;padding:20px">Agent-level data will appear here once the source sheet is connected.</td></tr></tbody></table>`;
+  }
+  openModal(b.batchId + ' — Agent-Level Details', html);
+}
+
+function renderAgentTables(group){
+  const weeks = agentPerfData.weeks || [36,37,38,39];
+  let h = '';
+  if(group.chatAgents && group.chatAgents.length){
+    const t = {aht: group.chatAgents[0].aht_target || 6.7, tsat: group.chatAgents[0].tsat_target || 86, sop: group.chatAgents[0].sop_target || 90};
+    h += '<div style="margin-bottom:16px"><h4 style="font-size:13px;font-weight:700;margin-bottom:8px">&#128100; Chat Agents ('+group.chatAgents.length+')</h4>';
+    h += '<div class="agent-table-wrap"><table class="agent-table"><thead><tr><th class="name-col">Agent</th>';
+    weeks.forEach(w => { h += '<th>AHT W'+w+'</th>'; });
+    h += '<th style="background:#fff3cd;color:#856404">Target</th>';
+    weeks.forEach(w => { h += '<th>TSAT W'+w+'</th>'; });
+    h += '<th style="background:#fff3cd;color:#856404">Target</th></tr></thead><tbody>';
+    group.chatAgents.forEach(a => {
+      h += '<tr><td class="name-cell">'+a.name+'</td>';
+      weeks.forEach(w => { const v=a['aht_w'+w]; h += v!==undefined?'<td>'+v.toFixed(1)+'</td>':'<td style="color:#c7c7cc">\u2014</td>'; });
+      h += '<td style="background:#fff3cd;color:#856404;font-weight:700">'+t.aht+'</td>';
+      weeks.forEach(w => { const v=a['tsat_w'+w]; h += v!==undefined?'<td>'+v+'</td>':'<td style="color:#c7c7cc">\u2014</td>'; });
+      h += '<td style="background:#fff3cd;color:#856404;font-weight:700">'+t.tsat+'</td></tr>';
+    });
+    h += '</tbody></table></div></div>';
+  }
+  if(group.voiceAgents && group.voiceAgents.length){
+    const t = {aht: group.voiceAgents[0].aht_target || 4.7, tsat: group.voiceAgents[0].tsat_target || 92};
+    h += '<div><h4 style="font-size:13px;font-weight:700;margin-bottom:8px">&#127908; Voice Agents ('+group.voiceAgents.length+')</h4>';
+    h += '<div class="agent-table-wrap"><table class="agent-table"><thead><tr><th class="name-col">Agent</th>';
+    weeks.forEach(w => { h += '<th>AHT W'+w+'</th>'; });
+    h += '<th style="background:#fff3cd;color:#856404">Target</th>';
+    weeks.forEach(w => { h += '<th>TSAT W'+w+'</th>'; });
+    h += '<th style="background:#fff3cd;color:#856404">Target</th></tr></thead><tbody>';
+    group.voiceAgents.forEach(a => {
+      h += '<tr><td class="name-cell">'+a.name+'</td>';
+      weeks.forEach(w => { const v=a['aht_w'+w]; h += v!==undefined?'<td>'+v.toFixed(2)+'</td>':'<td style="color:#c7c7cc">\u2014</td>'; });
+      h += '<td style="background:#fff3cd;color:#856404;font-weight:700">'+t.aht+'</td>';
+      weeks.forEach(w => { const v=a['tsat_w'+w]; if(v!==undefined){const pv=typeof v==='number'&&v<=1?(v*100).toFixed(1):v;h+='<td>'+pv+'</td>';}else{h+='<td style="color:#c7c7cc">\u2014</td>';} });
+      h += '<td style="background:#fff3cd;color:#856404;font-weight:700">'+t.tsat+'</td></tr>';
+    });
+    h += '</tbody></table></div></div>';
+  }
+  return h;
+}
+
+function togglePN(idx){
+  const card = document.getElementById('pn-'+idx);
+  if(card) card.classList.toggle('expanded');
+}
+
+/* ---- Render Training Tab ---- */
+function renderTrainingTab(){
+  const el = document.getElementById('tab-training');
+  const completed = batches.filter(b => b.trainStatus === 'Completed');
+  const ongoing = batches.filter(b => isOngoing(b.trainStatus));
+
+  let html = '<div class="split-container">';
+  // Left: Completed
+  html += '<div class="split-section">';
+  html += '<div class="split-header"><div class="dot completed"></div><h2>Completed</h2><span class="count completed">'+completed.length+' batches</span></div>';
+  if(completed.length){
+    html += '<div class="batch-grid">';
+    completed.forEach(b => { html += trainCard(b); });
+    html += '</div>';
+  } else {
+    html += '<div class="empty-state"><div class="icon">&#9989;</div><p>No completed training batches yet</p></div>';
+  }
+  html += '</div>';
+
+  // Right: Ongoing
+  html += '<div class="split-section">';
+  html += '<div class="split-header"><div class="dot ongoing"></div><h2>Ongoing</h2><span class="count ongoing">'+ongoing.length+' batches</span></div>';
+  if(ongoing.length){
+    html += '<div class="batch-grid">';
+    ongoing.forEach(b => { html += trainCard(b); });
+    html += '</div>';
+  } else {
+    html += '<div class="empty-state"><div class="icon">&#128218;</div><p>No ongoing training batches</p></div>';
+  }
+  html += '</div></div>';
+  el.innerHTML = html;
+}
+
+/* ---- Render Nesting Tab ---- */
+function renderNestingTab(){
+  const el = document.getElementById('tab-nesting');
+  const hasNesting = batches.filter(b => !isNA(b.nestStatus));
+  const completed = hasNesting.filter(b => b.nestStatus === 'Completed');
+  const ongoing = hasNesting.filter(b => isOngoing(b.nestStatus));
+  const noNesting = batches.filter(b => isNA(b.nestStatus));
+
+  let html = '<div class="split-container">';
+  // Left: Completed
+  html += '<div class="split-section">';
+  html += '<div class="split-header"><div class="dot completed"></div><h2>Completed</h2><span class="count completed">'+completed.length+' batches</span></div>';
+  if(completed.length){
+    html += '<div class="batch-grid">';
+    completed.forEach((b,i) => { html += nestCard(b, batches.indexOf(b)); });
+    html += '</div>';
+  } else {
+    html += '<div class="empty-state"><div class="icon">&#9989;</div><p>No completed nesting batches yet</p></div>';
+  }
+  html += '</div>';
+
+  // Right: Ongoing
+  html += '<div class="split-section">';
+  html += '<div class="split-header"><div class="dot ongoing"></div><h2>Ongoing</h2><span class="count ongoing">'+ongoing.length+' batches</span></div>';
+  if(ongoing.length){
+    html += '<div class="batch-grid">';
+    ongoing.forEach((b,i) => { html += nestCard(b, batches.indexOf(b)); });
+    html += '</div>';
+  } else {
+    html += '<div class="empty-state"><div class="icon">&#128218;</div><p>No ongoing nesting batches</p></div>';
+  }
+  html += '</div></div>';
+
+  // No nesting section
+  if(noNesting.length){
+    html += '<div style="margin-top:24px;padding-top:16px;border-top:1px solid #e8e8ed"><div class="split-header"><div class="dot" style="background:#c7c7cc"></div><h2>No Nesting (Cross LOB / N/A)</h2><span class="count" style="background:#f5f5f7;color:#86868b">'+noNesting.length+' batches</span></div>';
+    html += '<div class="batch-grid" style="grid-template-columns:repeat(auto-fill,minmax(350px,1fr))">';
+    noNesting.forEach(b => {
+      html += `<div class="batch-card" style="border-left:4px solid #c7c7cc">
+        <div class="card-header"><h3>${b.batchId} <span class="a-learning-tag">A-Learning</span></h3>
+        <div class="meta"><span>${b.venture||'\u2014'}</span><span>${b.bpo||'\u2014'}</span></div></div>
+        <div class="card-body"><div class="detail-rows">
+          <div class="detail-row"><span class="dl">Reason</span><span class="dv">${b.nestRemarks || 'Cross LOB training: Nesting not guided'}</span></div>
+          <div class="detail-row"><span class="dl">Training Status</span><span class="dv">${statusPill(b.trainStatus)}</span></div>
+        </div></div></div>`;
+    });
+    html += '</div></div>';
+  }
+  el.innerHTML = html;
+}
+
+/* ---- Render Post-Nesting Tab ---- */
+function renderPostNestTab(){
+  const el = document.getElementById('tab-postnest');
+  // Categorize: completed nesting batches and ongoing nesting batches
+  const hasNesting = batches.filter(b => !isNA(b.nestStatus));
+  const completed = hasNesting.filter(b => b.nestStatus === 'Completed');
+  const ongoing = hasNesting.filter(b => isOngoing(b.nestStatus));
+
+  let html = '<div class="split-container">';
+  // Left: Completed
+  html += '<div class="split-section">';
+  html += '<div class="split-header"><div class="dot completed"></div><h2>Completed</h2><span class="count completed">'+completed.length+' batches</span></div>';
+  if(completed.length){
+    completed.forEach(b => { html += postNestCard(b, batches.indexOf(b)); });
+  } else {
+    html += '<div class="empty-state"><div class="icon">&#9989;</div><p>No completed nesting batches yet</p></div>';
+  }
+  html += '</div>';
+
+  // Right: Ongoing
+  html += '<div class="split-section">';
+  html += '<div class="split-header"><div class="dot ongoing"></div><h2>Ongoing</h2><span class="count ongoing">'+ongoing.length+' batches</span></div>';
+  if(ongoing.length){
+    ongoing.forEach(b => { html += postNestCard(b, batches.indexOf(b)); });
+  } else {
+    html += '<div class="empty-state"><div class="icon">&#128218;</div><p>No ongoing nesting batches</p></div>';
+  }
+  html += '</div></div>';
+  el.innerHTML = html;
+}
+
+/* ---- Tab Switching ---- */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+/* ---- Init ---- */
+renderKPIs();
+renderTrainingTab();
+renderNestingTab();
+renderPostNestTab();
+</script>
+</body>
+</html>
