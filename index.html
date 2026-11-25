@@ -138,6 +138,8 @@
   .agent-table td{padding:6px;text-align:center;border-bottom:1px solid #f0f0f5}
   .agent-table td.name-cell{text-align:left;font-weight:600;white-space:nowrap}
   .agent-table tr:hover td{background:#f8f9fa}
+  .agent-table td.above{background:#d4edda;color:#155724;font-weight:600}
+  .agent-table td.below{background:#f8d7da;color:#721c24;font-weight:600}
 
   /* Responsive */
   @media(max-width:900px){
@@ -172,7 +174,7 @@
 
 <div class="header">
   <h1>A-Learning Training & Nesting Tracker <span class="badge a-badge">A-Learning Only</span></h1>
-  <p>A-Learning batches from Training & Nesting Data sheet &bull; Last updated: 25 Nov 2026, 12:03 PKT</p>
+  <p>A-Learning batches from Training & Nesting Data sheet &bull; Last updated: 25 Nov 2026, 20:20 PKT</p>
   <a class="sheet-link" href="https://alidocs.dingtalk.com/i/nodes/Gl6Pm2Db8D370q7PInLeRXqYJxLq0Ee4" target="_blank">Open Source Sheet &rarr;</a>
 </div>
 
@@ -206,6 +208,7 @@
 <script>
 const batches = [{"batchId": "NP 3PV LMS Batch-62", "aLearning": true, "bpo": "In-house", "venture": "NP", "trainer": null, "startHC": null, "endHC": null, "domain": null, "lob": null, "trainStart": null, "trainEnd": null, "trainStatus": null, "nestStart": null, "nestEnd": null, "nestStartHC": null, "nestEndHC": null, "nestStatus": null, "nestRemarks": null, "nestGrad": null, "extNestCount": null, "extNestGrad": null, "remarks": null, "tsatChat": null, "tsatVoice": null, "sop": null, "aht": null, "qa": null, "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "PK PSC LMS Batch-69", "aLearning": true, "bpo": "Ibex", "venture": "PK", "trainer": "Insha Khan", "startHC": 1, "endHC": 1, "domain": "PS", "lob": "LC", "trainStart": 46330, "trainEnd": 46339, "trainStatus": "Discontinued", "nestStart": null, "nestEnd": null, "nestStartHC": null, "nestEndHC": null, "nestStatus": "Discontinued", "nestRemarks": "Agent met an accident & got fractured. Training discontinued", "nestGrad": null, "extNestCount": null, "extNestGrad": null, "remarks": null, "tsatChat": null, "tsatVoice": null, "sop": null, "aht": null, "qa": null, "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "BD CSC LMS Batch-68", "aLearning": true, "bpo": "Digicon", "venture": "BD", "trainer": "Soneya Akter", "startHC": 6, "endHC": 6, "domain": "CS", "lob": "LC", "trainStart": 46326, "trainEnd": 46337, "trainStatus": "Completed", "nestStart": 46338, "nestEnd": 46343, "nestStartHC": 4, "nestEndHC": 4, "nestStatus": "On-going", "nestRemarks": null, "nestGrad": null, "extNestCount": null, "extNestGrad": null, "remarks": null, "tsatChat": 0.8505, "tsatVoice": "N/A", "sop": 0.91, "aht": 0.00663194444444444, "qa": 0.05, "remarks2": "QA Deficiency: 3-day average; CSAT & AHT: 5-day average.", "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "PK PSC LMS Batch-67", "aLearning": true, "bpo": "Tribe", "venture": "PK", "trainer": "Muhammad Saud Ayub", "startHC": 11, "endHC": 5, "domain": "PS", "lob": "LC/IB", "trainStart": 46311, "trainEnd": 46321, "trainStatus": "Completed", "nestStart": 46322, "nestEnd": 46326, "nestStartHC": 5, "nestEndHC": 5, "nestStatus": "Completed", "nestRemarks": "6 agents left during training", "nestGrad": "N/A", "extNestCount": "N/A", "extNestGrad": "N/A", "remarks": "Six agents left during the training, and five agents passed the nesting.", "tsatChat": 0.92, "tsatVoice": 0.95, "sop": 0.93, "aht": "LC 10 Min - IB 8 Min", "qa": "7% for LC - 20% for IB", "remarks2": "Incorrect or incomplete guidance due to not checking the system, portal and complaint remarks.\r\nSoft skills missing: compliments, personal care, apology and seller’s name.\r\nDead air and excessive first hold time.\r\nErrors while ending the interaction.", "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "PK CSC LMS Batch-66", "aLearning": true, "bpo": "Tribe", "venture": "PK", "trainer": "Hamza Ahmed Butt", "startHC": 11, "endHC": 6, "domain": "CS", "lob": "LC/IB", "trainStart": 46311, "trainEnd": 46322, "trainStatus": "Completed", "nestStart": 46322, "nestEnd": 46326, "nestStartHC": 6, "nestEndHC": 4, "nestStatus": "Completed", "nestRemarks": "5 agents left during training", "nestGrad": null, "extNestCount": null, "extNestGrad": null, "remarks": null, "tsatChat": null, "tsatVoice": null, "sop": null, "aht": null, "qa": null, "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "PK LLM CSC LMS-65", "aLearning": true, "bpo": "Tribe", "venture": "BD", "trainer": "Muhammad Saud Ayub", "startHC": 1, "endHC": 1, "domain": "CS", "lob": "LC", "trainStart": 46309, "trainEnd": 46314, "trainStatus": "Completed", "nestStart": 46315, "nestEnd": 46319, "nestStartHC": 1, "nestEndHC": 1, "nestStatus": "Completed", "nestRemarks": "As this is an internal transition from PK CS to BD CS with a largely similar product, the training was held for only 5 days.", "nestGrad": "N/A", "extNestCount": "N/A", "extNestGrad": "N/A", "remarks": "Due to her stats, the agent was moved back to PK CS during nesting, and the nesting could not be completed.", "tsatChat": "N/A", "tsatVoice": "N/A", "sop": "N/A", "aht": "N/A", "qa": "N/A", "remarks2": "N/A", "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "PK PSC LMS Batch-64", "aLearning": true, "bpo": "Tribe", "venture": "PK", "trainer": "Muhammad Saud Ayub", "startHC": 3, "endHC": 3, "domain": "PS", "lob": "LC/IB", "trainStart": 46305, "trainEnd": 46316, "trainStatus": "Discontinued", "nestStart": 46317, "nestEnd": 46322, "nestStartHC": "N/A", "nestEndHC": "N/A", "nestStatus": "Discontinued", "nestRemarks": "Training Discountinue due to new hiring", "nestGrad": "N/A", "extNestCount": "N/A", "extNestGrad": "N/A", "remarks": "Training Discountinue due to new hiring", "tsatChat": "N/A", "tsatVoice": "N/A", "sop": "N/A", "aht": "N/A", "qa": "N/A", "remarks2": "N/A", "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "PK PSC LMS Batch-63", "aLearning": true, "bpo": "Ibex", "venture": "PK", "trainer": "Insha Khan", "startHC": 2, "endHC": 2, "domain": "PS", "lob": "LC", "trainStart": 46295, "trainEnd": 46305, "trainStatus": "Completed", "nestStart": 46307, "nestEnd": 46311, "nestStartHC": 2, "nestEndHC": 2, "nestStatus": "Completed", "nestRemarks": "Nesting Completed", "nestGrad": 1, "extNestCount": "N/A", "extNestGrad": "N/A", "remarks": "Training & Nesting has been completed", "tsatChat": 0.84, "tsatVoice": "NA", "sop": 0.862, "aht": 10, "qa": 0.415, "remarks2": "Missing Personalization\r\nIncorret SOP \r\nHold procedure not followed & dead air found\r\nIncomplete Resolution \r\nCancellation SOP unclear\r\nGenuine compliments missing", "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "BD CSC LMS Batch-62", "aLearning": true, "bpo": "Digicon", "venture": "BD", "trainer": "Soneya Akter", "startHC": 11, "endHC": 9, "domain": "CS", "lob": "LC/IB", "trainStart": 46295, "trainEnd": 46306, "trainStatus": "Completed", "nestStart": 46308, "nestEnd": 46314, "nestStartHC": 9, "nestEndHC": 8, "nestStatus": "Completed", "nestRemarks": "Nesting Completed", "nestGrad": 1, "extNestCount": 0, "extNestGrad": "N/A", "remarks": "8 agents completed nesting: 6 Inbound and 2 Live Chat.", "tsatChat": 0.9159, "tsatVoice": 0.9361, "sop": 0.9056, "aht": "IB:00:04:59,CHAT:00:07:45", "qa": 0, "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "PK IR CSC LMS Batch-61", "aLearning": true, "bpo": "In-house", "venture": "PK", "trainer": "Noel Ansar", "startHC": 2, "endHC": 2, "domain": "CS", "lob": "CS IR", "trainStart": 46287, "trainEnd": 46304, "trainStatus": "Completed", "nestStart": 46310, "nestEnd": 46317, "nestStartHC": 2, "nestEndHC": 2, "nestStatus": "Completed", "nestRemarks": "Nesting evaluation delayed. ", "nestGrad": "Please update the status @Noel Ansar", "extNestCount": null, "extNestGrad": null, "remarks": null, "tsatChat": null, "tsatVoice": null, "sop": null, "aht": null, "qa": null, "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "PK PSC LMS Batch-60", "aLearning": true, "bpo": "Ibex", "venture": "PK", "trainer": "Insha Khan", "startHC": 3, "endHC": 3, "domain": "PS", "lob": "LC", "trainStart": 46282, "trainEnd": 46289, "trainStatus": "Completed", "nestStart": 46290, "nestEnd": 46295, "nestStartHC": 2, "nestEndHC": 2, "nestStatus": "Completed", "nestRemarks": "Nesting completed for 2 agents. 1 Agent is back to CS LOB", "nestGrad": 1, "extNestCount": "N/A", "extNestGrad": "N/A", "remarks": "Training & Nesting has been completed", "tsatChat": 0.904, "tsatVoice": "N/A", "sop": 0.9331, "aht": "LC - 8.3 Mins", "qa": "LC : 16.66%", "remarks2": "Missing Personalization\r\nComplaint Not Forwarded\r\nHold procedure not followed\r\nIncomplete Resolution \r\nCancellation SOP unclear\r\nGenuine compliments missing", "tsatChat30": 0.92045, "tsatVoice30": "N/A", "sop30": 0.9505, "aht30": "Chat: 9.86\r\n", "qa30": 0.0833, "remarks30": null, "postNest": {"tsatChat30": 0.92045, "sop30": 0.9505, "aht30": "Chat: 9.86\r\n", "qa30": 0.0833}}, {"batchId": "BD PSC LMS Batch-59", "aLearning": true, "bpo": "Digicon", "venture": "BD", "trainer": "Soneya Akter", "startHC": 7, "endHC": 7, "domain": "PS", "lob": "LC/IB", "trainStart": 46282, "trainEnd": 46293, "trainStatus": "Completed", "nestStart": 46294, "nestEnd": 46299, "nestStartHC": 7, "nestEndHC": 6, "nestStatus": "Completed", "nestRemarks": "Extended Nesting of 1 agent is going on", "nestGrad": 0.9, "extNestCount": 1, "extNestGrad": null, "remarks": "One trainee failed certification and could not complete the extended nesting period.", "tsatChat": 0.9417, "tsatVoice": 0.9444, "sop": 0.8953, "aht": "LC: 7:39 mint\r\nIB 05:00 mint", "qa": "LC:0%\r\nIB: 30%", "remarks2": null, "tsatChat30": 0.8561, "tsatVoice30": 0.8688, "sop30": 0.9691, "aht30": "IB: 04:59:7\r\r\nChat:06:55:3\r\r\n", "qa30": null, "remarks30": "Performance data collected for 4 agents from 5 October to 5 November. However, one agent, Tanha, resigned effective 1 November.", "postNest": {"tsatChat30": 0.8561, "tsatVoice30": 0.8688, "sop30": 0.9691, "aht30": "IB: 04:59:7\r\r\nChat:06:55:3\r\r\n"}}, {"batchId": "LK PSC LMS Batch-58", "aLearning": true, "bpo": "KBPO", "venture": "LK", "trainer": "Fathima Saliha", "startHC": 5, "endHC": 5, "domain": "PS", "lob": "LC/IB", "trainStart": 46282, "trainEnd": 46290, "trainStatus": "Completed", "nestStart": "N/A", "nestEnd": "N/A", "nestStartHC": "N/A", "nestEndHC": "N/A", "nestStatus": "N/A", "nestRemarks": "Cross LOB training: Nesting is not guided", "nestGrad": null, "extNestCount": null, "extNestGrad": null, "remarks": "Cross LOB training: Nesting is not guided", "tsatChat": "N/A", "tsatVoice": "N/A", "sop": "N/A", "aht": "N/A", "qa": "N/A", "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "NP IR CSC LMS Batch-57", "aLearning": true, "bpo": "In-house", "venture": "NP", "trainer": "Noel Ansar", "startHC": 1, "endHC": 1, "domain": "CS", "lob": "CS IR", "trainStart": 46286, "trainEnd": 46308, "trainStatus": "Completed", "nestStart": 46309, "nestEnd": 46316, "nestStartHC": 1, "nestEndHC": null, "nestStatus": "Completed", "nestRemarks": "Nesting is going on", "nestGrad": null, "extNestCount": null, "extNestGrad": null, "remarks": null, "tsatChat": null, "tsatVoice": null, "sop": null, "aht": null, "qa": null, "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "LK IR CSC LMS Batch-56", "aLearning": true, "bpo": "In-house", "venture": "LK", "trainer": "Noel Ansar", "startHC": 2, "endHC": 2, "domain": "PS", "lob": "CS IR", "trainStart": 46283, "trainEnd": 46308, "trainStatus": "Completed", "nestStart": 46309, "nestEnd": 46316, "nestStartHC": 2, "nestEndHC": null, "nestStatus": "Completed", "nestRemarks": "Nesting is going on", "nestGrad": null, "extNestCount": null, "extNestGrad": null, "remarks": "Training is going on", "tsatChat": null, "tsatVoice": null, "sop": null, "aht": null, "qa": null, "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "PK PSC LMS Batch-55", "aLearning": true, "bpo": "Tribe", "venture": "PK", "trainer": "Muhammad Saud Ayub", "startHC": 8, "endHC": 8, "domain": "PS", "lob": "LC/IB", "trainStart": 46282, "trainEnd": 46289, "trainStatus": "Completed", "nestStart": "N/A", "nestEnd": "N/A", "nestStartHC": "N/A", "nestEndHC": "N/A", "nestStatus": "N/A", "nestRemarks": "Cross LOB training: Nesting is not guided", "nestGrad": "N/A", "extNestCount": "N/A", "extNestGrad": "N/A", "remarks": "The training has been completed; however, nesting has not started, as per the instructions.", "tsatChat": "N/A", "tsatVoice": "N/A", "sop": "N/A", "aht": "N/A", "qa": "N/A", "remarks2": null, "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "NP PSC LMS Batch-54", "aLearning": true, "bpo": "In-house", "venture": "NP", "trainer": "Noel Ansar", "startHC": 1, "endHC": 1, "domain": "PS", "lob": "LC", "trainStart": 46266, "trainEnd": 46279, "trainStatus": "Completed", "nestStart": 46280, "nestEnd": 46284, "nestStartHC": 1, "nestEndHC": 1, "nestStatus": "Completed", "nestRemarks": "Nesting is completed", "nestGrad": 0.94, "extNestCount": 0, "extNestGrad": "N/A", "remarks": " Training & Nesting been completed; And the agent has successfully been graduated", "tsatChat": 0.83, "tsatVoice": "N/A", "sop": 0.71, "aht": "7:40 mins", "qa": 0.2, "remarks2": "All nesting targets has achived except SOP compliance. \r\nFeedback provided & agent is live on floor now", "tsatChat30": null, "tsatVoice30": null, "sop30": null, "aht30": null, "qa30": null, "remarks30": null, "postNest": null}, {"batchId": "PK CSC LMS Batch-53", "aLearning": true, "bpo": "Tribe", "venture": "PK", "trainer": "Muhammad Saud Ayub", "startHC": 12, "endHC": 10, "domain": "CS", "lob": "LC/IB", "trainStart": 46255, "trainEnd": 46267, "trainStatus": "Completed", "nestStart": 46268, "nestEnd": 46277, "nestStartHC": 10, "nestEndHC": 9, "nestStatus": "Completed", "nestRemarks": "All agents has cleared Nesting Phase", "nestGrad": 1, "extNestCount": 0, "extNestGrad": "N/A", "remarks": "2 agents left training due to personal issues", "tsatChat": 0.9, "tsatVoice": 0.95, "sop": 0.86, "aht": "LC-9 Mins IB-5 Mins", "qa": "LC 8% - IB 35%", "remarks2": "Missing Personalization\r\nComplaint Not Forwarded\r\nMissing Complaint Timeline/Tracker Guidance\r\nIncomplete Resolution\r\nFCR Not Created\r\nIncorrect Delivery Timeline Given\r\nIncorrect FCR Created", "tsatChat30": 0.88, "tsatVoice30": 0.93, "sop30": 0.9, "aht30": "Chat: 9.98\r\r\nVoice:4.96\r\r\n", "qa30": 0.116, "remarks30": null, "postNest": {"tsatChat30": 0.88, "tsatVoice30": 0.93, "sop30": 0.9, "aht30": "Chat: 9.98\r\r\nVoice:4.96\r\r\n", "qa30": 0.116}}];
 const agentPerfData = {"weeks": [36, 37, 38, 39], "batchGroups": [{"batchId": "PK CSC LMS Batch-53", "venture": "PK", "bpo": "Tribe", "domain": "CS", "lob": "LC/IB", "chatAgents": [], "voiceAgents": [], "chatCount": 0, "voiceCount": 0}]};
+const drilldownData = {"trainingQuiz": [{"batchId": "PK LLM CSC LMS-65", "startDate": "16-Oct-2026", "agentName": "Ahmed Khan", "quiz1": 85, "quiz2": null, "quiz3": null, "quiz4": null, "quiz5": null, "quiz6": null, "quiz7": null, "quiz8": null, "quiz9": null, "avg": 85, "remarks": "Good understanding"}, {"batchId": "PK LLM CSC LMS-65", "startDate": "16-Oct-2026", "agentName": "Sara Ali", "quiz1": 60, "quiz2": null, "quiz3": null, "quiz4": null, "quiz5": null, "quiz6": null, "quiz7": null, "quiz8": null, "quiz9": null, "avg": 60, "remarks": "Consecutive 3 day scores are low"}, {"batchId": "PK LLM CSC LMS-65", "startDate": "16-Oct-2026", "agentName": "Ahmed Khan", "quiz1": 92, "quiz2": null, "quiz3": null, "quiz4": null, "quiz5": null, "quiz6": null, "quiz7": null, "quiz8": null, "quiz9": null, "avg": 92, "remarks": "Class toper"}, {"batchId": "PK PSC LMS Batch-64", "startDate": "22-Oct-2026", "agentName": "Usman Tariq", "quiz1": 78, "quiz2": null, "quiz3": null, "quiz4": null, "quiz5": null, "quiz6": null, "quiz7": null, "quiz8": null, "quiz9": null, "avg": 78, "remarks": "Need improvement"}, {"batchId": "PK PSC LMS Batch-64", "startDate": "22-Oct-2026", "agentName": "Rio", "quiz1": null, "quiz2": null, "quiz3": null, "quiz4": null, "quiz5": null, "quiz6": null, "quiz7": null, "quiz8": null, "quiz9": null, "avg": null, "remarks": ""}, {"batchId": "PK PSC LMS Batch-64", "startDate": "22-Oct-2026", "agentName": "James", "quiz1": null, "quiz2": null, "quiz3": null, "quiz4": null, "quiz5": null, "quiz6": null, "quiz7": null, "quiz8": null, "quiz9": null, "avg": null, "remarks": ""}, {"batchId": "PK PSC LMS Batch-64", "startDate": "22-Oct-2026", "agentName": "Kamra", "quiz1": null, "quiz2": null, "quiz3": null, "quiz4": null, "quiz5": null, "quiz6": null, "quiz7": null, "quiz8": null, "quiz9": null, "avg": null, "remarks": ""}], "trainingAssessment": [{"batchId": "PK CSC LMS Batch-53", "agentName": "Ahmed Khan", "grandQuiz": 88, "productAssessment": 92, "communicationAssessment": 85, "overall": 88.3, "status": "Pass", "remarks": "Strong performer"}, {"batchId": "PK CSC LMS Batch-53", "agentName": "Sara Ali", "grandQuiz": 72, "productAssessment": 68, "communicationAssessment": 80, "overall": 73.3, "status": "Borderline", "remarks": "Needs coaching on product"}, {"batchId": "NP PSC LMS Batch-54", "agentName": "Ali Hassan", "grandQuiz": 95, "productAssessment": 90, "communicationAssessment": 88, "overall": 91, "status": "Pass", "remarks": "Top performer"}], "nestingOngoing": [{"batchId": "PK PSC LMS Batch-64", "agentName": "Ahmed Khan", "week": "Week 1", "ahtTarget": 5, "ahtAchieved": 6.2, "tsatTarget": 85, "tsatAchieved": 82, "remarks": "Below target on both"}, {"batchId": "PK PSC LMS Batch-64", "agentName": "Ahmed Khan", "week": "Week 2", "ahtTarget": 5, "ahtAchieved": 5.1, "tsatTarget": 85, "tsatAchieved": 87, "remarks": "Improving, TSAT on track"}, {"batchId": "PK PSC LMS Batch-64", "agentName": "Sara Ali", "week": "Week 1", "ahtTarget": 5, "ahtAchieved": 4.8, "tsatTarget": 85, "tsatAchieved": 90, "remarks": "Good start"}, {"batchId": "PK PSC LMS Batch-64", "agentName": "Sara Ali", "week": "Week 2", "ahtTarget": 5, "ahtAchieved": 4.5, "tsatTarget": 85, "tsatAchieved": 92, "remarks": "Consistent performer"}], "nestingCompleted": [{"batchId": "PK CSC LMS Batch-53", "agentName": "Ahmed Khan", "ahtTarget": 5.3, "ahtAchieved": 4.8, "tsatChatTarget": 85, "tsatChatAchieved": 90, "tsatVoiceTarget": 90, "tsatVoiceAchieved": 93, "sopTarget": 85, "sopAchieved": 91, "qaTarget": 20, "qaAchieved": 8, "overallAvg": 90, "graduated": "Yes", "remarks": ""}, {"batchId": "PK CSC LMS Batch-53", "agentName": "Sara Ali", "ahtTarget": 5.3, "ahtAchieved": 5.5, "tsatChatTarget": 85, "tsatChatAchieved": 82, "tsatVoiceTarget": 90, "tsatVoiceAchieved": 88, "sopTarget": 85, "sopAchieved": 78, "qaTarget": 20, "qaAchieved": 22, "overallAvg": 70, "graduated": "No", "remarks": "Extended nesting needed"}], "postNestWeekly": [{"batchId": "BD PSC LMS Batch-59", "agentName": "Ahmed Khan", "week": "Week 1", "aht": 5.2, "tsatChat": 88, "tsatVoice": 91, "sopCompliance": 89, "qaScore": 12, "remarks": ""}, {"batchId": "BD PSC LMS Batch-59", "agentName": "Ahmed Khan", "week": "Week 2", "aht": 4.9, "tsatChat": 90, "tsatVoice": 94, "sopCompliance": 92, "qaScore": 8, "remarks": "Improved across all KPIs"}, {"batchId": "BD PSC LMS Batch-59", "agentName": "Sara Ali", "week": "Week 1", "aht": 6.1, "tsatChat": 82, "tsatVoice": 85, "sopCompliance": 80, "qaScore": 18, "remarks": "Below target on SOP"}, {"batchId": "BD PSC LMS Batch-59", "agentName": "Sara Ali", "week": "Week 2", "aht": 5.5, "tsatChat": 85, "tsatVoice": 88, "sopCompliance": 86, "qaScore": 14, "remarks": "Improving steadily"}], "postNestSummary": [{"batchId": "PK CSC LMS Batch-53", "agentName": "Ahmed Khan", "avgAht": 4.5, "avgTsatChat": 91, "avgTsatVoice": 93, "avgSop": 92, "avgQa": 5, "weeksMonitored": 4, "status": "On Track", "remarks": "Excellent performer"}, {"batchId": "PK CSC LMS Batch-53", "agentName": "Sara Ali", "avgAht": 5.8, "avgTsatChat": 83, "avgTsatVoice": 86, "avgSop": 79, "avgQa": 19, "weeksMonitored": 4, "status": "Needs Attention", "remarks": "SOP and QA below target"}, {"batchId": "NP PSC LMS Batch-54", "agentName": "Ali Hassan", "avgAht": 7.2, "avgTsatChat": 75, "avgTsatVoice": null, "avgSop": 71, "avgQa": 22, "weeksMonitored": 4, "status": "On Track", "remarks": "Voice-only agent"}]};
 
 /* ---- Helpers ---- */
 function excelDate(serial){
@@ -276,9 +279,9 @@ function trainCard(b){
         ${b.remarks?`<div class="detail-row"><span class="dl">Remarks</span><span class="dv">${b.remarks}</span></div>`:''}
       </div>`;
   if(ongoing){
-    h += `<button class="drill-btn" onclick="openModal('${b.batchId} — Daily Quiz Results','<div class=\\\'modal-placeholder\\\'><div class=\\\'icon\\\'>&#128221;</div><p><strong>Daily Quiz Results</strong></p><div class=\\\'sub\\\'>Data source will be connected from the online quiz sheet.<br>Share the sheet link to enable this view.</div></div>')"><span class="icon">&#128221;</span> View Daily Quiz Results</button>`;
+    h += `<button class="drill-btn" onclick="showTrainingQuizModal('${b.batchId.replace(/'/g, "\\'")}')"><span class="icon">&#128221;</span> View Daily Quiz Results</button>`;
   } else {
-    h += `<button class="drill-btn primary" onclick="openModal('${b.batchId} — Assessment Results','<div class=\\\'modal-placeholder\\\'><div class=\\\'icon\\\'>&#127942;</div><p><strong>Assessment Results</strong></p><div class=\\\'sub\\\'>Grand Quiz, Product Assessment & Communication Assessment<br>agent-level results will appear here once the data sheet is shared.</div></div>')"><span class="icon">&#127942;</span> View Assessment Results</button>`;
+    h += `<button class="drill-btn primary" onclick="showAssessmentModal('${b.batchId.replace(/'/g, "\\'")}')"><span class="icon">&#127942;</span> View Assessment Results</button>`;
   }
   h += '</div></div>';
   return h;
@@ -345,15 +348,62 @@ function openNestAgentModal(idx, type){
   const b = batches[idx];
   let html = '';
   if(type === 'ongoing'){
-    html = `<div class="modal-placeholder"><div class="icon">&#128100;</div><p><strong>Agent-Level Performance (Ongoing)</strong></p><div class="sub">AHT and TSAT at agent level for ${b.batchId}<br>Data will be populated once the nesting performance sheet is shared.</div></div>
-    <table class="agent-table" style="margin-top:16px"><thead><tr><th class="name-col">Agent Name</th><th>AHT (Target)</th><th>AHT (Achieved)</th><th>TSAT (Target)</th><th>TSAT (Achieved)</th></tr></thead>
-    <tbody><tr><td colspan="5" style="text-align:center;color:#86868b;padding:20px">Agent data will appear here once the source sheet is connected.</td></tr></tbody></table>`;
+    const rows = (drilldownData.nestingOngoing || []).filter(r => r.batchId === b.batchId);
+    if(rows.length){
+      // Group by agent
+      const agents = {};
+      rows.forEach(r => { if(!agents[r.agentName]) agents[r.agentName] = []; agents[r.agentName].push(r); });
+      html = '<h4 style="font-size:13px;font-weight:700;margin-bottom:10px">Agent-Level Performance (Ongoing) &mdash; ' + b.batchId + '</h4>';
+      html += '<div class="agent-table-wrap"><table class="agent-table"><thead><tr><th class="name-col">Agent Name</th><th>Week</th><th>AHT Target</th><th>AHT Achieved</th><th>TSAT Target (%)</th><th>TSAT Achieved (%)</th><th>Remarks</th></tr></thead><tbody>';
+      Object.keys(agents).forEach(name => {
+        const wk = agents[name];
+        wk.forEach((r, i) => {
+          const ahtClass = (r.ahtAchieved !== null && r.ahtTarget !== null && r.ahtAchieved <= r.ahtTarget) ? 'above' : (r.ahtAchieved !== null ? 'below' : '');
+          const tsatClass = (r.tsatAchieved !== null && r.tsatTarget !== null && r.tsatAchieved >= r.tsatTarget) ? 'above' : (r.tsatAchieved !== null ? 'below' : '');
+          html += '<tr>' + (i === 0 ? '<td class="name-cell" rowspan="' + wk.length + '">' + name + '</td>' : '') +
+            '<td>' + (r.week || '\u2014') + '</td>' +
+            '<td>' + fmt(r.ahtTarget) + '</td>' +
+            '<td class="achieved-cell ' + ahtClass + '">' + fmt(r.ahtAchieved) + '</td>' +
+            '<td>' + fmt(r.tsatTarget) + '%</td>' +
+            '<td class="achieved-cell ' + tsatClass + '">' + fmt(r.tsatAchieved) + '%</td>' +
+            '<td style="text-align:left;font-size:10px;max-width:180px;white-space:normal">' + (r.remarks || '') + '</td></tr>';
+        });
+      });
+      html += '</tbody></table></div>';
+    } else {
+      html = '<div class="modal-placeholder"><div class="icon">&#128100;</div><p><strong>Agent-Level Performance (Ongoing)</strong></p><div class="sub">No agent data available for ' + b.batchId + '</div></div>';
+    }
   } else {
-    html = `<div class="modal-placeholder"><div class="icon">&#128200;</div><p><strong>Agent-Level KPI Details (Completed)</strong></p><div class="sub">AHT, TSAT, SOP Compliance & QA at agent level for ${b.batchId}<br>Data will be populated once the nesting results sheet is shared.</div></div>
-    <table class="agent-table" style="margin-top:16px"><thead><tr><th class="name-col">Agent Name</th><th>AHT</th><th>TSAT Chat</th><th>TSAT Voice</th><th>SOP</th><th>QA</th></tr></thead>
-    <tbody><tr><td colspan="6" style="text-align:center;color:#86868b;padding:20px">Agent-level KPI data will appear here once the source sheet is connected.</td></tr></tbody></table>`;
+    const rows = (drilldownData.nestingCompleted || []).filter(r => r.batchId === b.batchId);
+    if(rows.length){
+      html = '<h4 style="font-size:13px;font-weight:700;margin-bottom:10px">Agent-Level KPI Details (Completed) &mdash; ' + b.batchId + '</h4>';
+      html += '<div class="agent-table-wrap"><table class="agent-table"><thead><tr>' +
+        '<th class="name-col">Agent Name</th>' +
+        '<th>AHT Tgt</th><th>AHT Ach</th>' +
+        '<th>TSAT Chat Tgt</th><th>TSAT Chat Ach</th>' +
+        '<th>TSAT Voice Tgt</th><th>TSAT Voice Ach</th>' +
+        '<th>SOP Tgt</th><th>SOP Ach</th>' +
+        '<th>QA Tgt</th><th>QA Ach</th>' +
+        '<th>Overall Avg</th><th>Graduated</th><th>Remarks</th>' +
+        '</tr></thead><tbody>';
+      rows.forEach(r => {
+        const gradClass = (r.graduated === 'Yes') ? 'above' : 'below';
+        html += '<tr><td class="name-cell">' + r.agentName + '</td>' +
+          '<td>' + fmt(r.ahtTarget) + '</td><td>' + fmt(r.ahtAchieved) + '</td>' +
+          '<td>' + fmt(r.tsatChatTarget) + '%</td><td>' + fmt(r.tsatChatAchieved) + '%</td>' +
+          '<td>' + fmt(r.tsatVoiceTarget) + '%</td><td>' + fmt(r.tsatVoiceAchieved) + '%</td>' +
+          '<td>' + fmt(r.sopTarget) + '%</td><td>' + fmt(r.sopAchieved) + '%</td>' +
+          '<td>&lt;' + fmt(r.qaTarget) + '%</td><td>' + fmt(r.qaAchieved) + '%</td>' +
+          '<td style="font-weight:700">' + fmt(r.overallAvg) + '</td>' +
+          '<td class="achieved-cell ' + gradClass + '" style="font-weight:700">' + fmt(r.graduated) + '</td>' +
+          '<td style="text-align:left;font-size:10px;max-width:160px;white-space:normal">' + (r.remarks || '') + '</td></tr>';
+      });
+      html += '</tbody></table></div>';
+    } else {
+      html = '<div class="modal-placeholder"><div class="icon">&#128200;</div><p><strong>Agent-Level KPI Details (Completed)</strong></p><div class="sub">No agent data available for ' + b.batchId + '</div></div>';
+    }
   }
-  openModal(b.batchId + ' — ' + (type==='ongoing' ? 'Ongoing Nesting Performance' : 'Completed Nesting KPIs'), html);
+  openModal(b.batchId + ' \u2014 ' + (type==='ongoing' ? 'Ongoing Nesting Performance' : 'Completed Nesting KPIs'), html);
 }
 
 /* ---- Post-Nesting Cards ---- */
@@ -391,7 +441,7 @@ function postNestCard(b, idx){
         <div class="perf-item"><div class="pv" style="font-size:11px">${fmt(b.aht)}</div><div class="pl">AHT</div></div>
         <div class="perf-item"><div class="pv">${fmt(b.qa)}</div><div class="pl">QA</div></div>
       </div>
-      <button class="drill-btn" onclick="openModal('${b.batchId} — Weekly Agent Performance','<div class=\\\'modal-placeholder\\\'><div class=\\\'icon\\\'>&#128200;</div><p><strong>Weekly Individual Performance</strong></p><div class=\\\'sub\\\'>Week-by-week agent performance for ${b.batchId}<br>AHT, TSAT, SOP Compliance at agent level.<br>Data will be populated once the performance sheet is shared.</div></div>')"><span class="icon">&#128200;</span> View Weekly Agent Performance</button>
+      <button class="drill-btn" onclick="showPostNestWeeklyModal('${b.batchId.replace(/'/g, "\\'")}')"><span class="icon">&#128200;</span> View Weekly Agent Performance</button>
     </div>`;
   } else {
     // Completed: Show batch averages
@@ -434,17 +484,125 @@ function postNestCard(b, idx){
 
 function openPostNestAgentModal(idx){
   const b = batches[idx];
-  // Check if agent perf data is available for this batch
-  const group = agentPerfData.batchGroups.find(g => g.batchId === b.batchId);
+  const rows = (drilldownData.postNestSummary || []).filter(r => r.batchId === b.batchId);
   let html = '';
-  if(group && (group.chatAgents.length || group.voiceAgents.length)){
-    html = renderAgentTables(group);
+  if(rows.length){
+    html = '<h4 style="font-size:13px;font-weight:700;margin-bottom:10px">Agent-Level 30-Day Summary &mdash; ' + b.batchId + '</h4>';
+    html += '<div class="agent-table-wrap"><table class="agent-table"><thead><tr>' +
+      '<th class="name-col">Agent Name</th><th>Avg AHT</th><th>Avg TSAT Chat (%)</th><th>Avg TSAT Voice (%)</th><th>Avg SOP (%)</th><th>Avg QA (%)</th><th>Weeks</th><th>Status</th><th>Remarks</th>' +
+      '</tr></thead><tbody>';
+    rows.forEach(r => {
+      const statusCls = (r.status === 'On Track') ? 'above' : 'below';
+      html += '<tr><td class="name-cell">' + r.agentName + '</td>' +
+        '<td>' + fmt(r.avgAht) + '</td>' +
+        '<td>' + fmt(r.avgTsatChat) + '</td>' +
+        '<td>' + fmt(r.avgTsatVoice) + '</td>' +
+        '<td>' + fmt(r.avgSop) + '</td>' +
+        '<td>' + fmt(r.avgQa) + '</td>' +
+        '<td>' + fmt(r.weeksMonitored) + '</td>' +
+        '<td class="achieved-cell ' + statusCls + '" style="font-weight:700">' + fmt(r.status) + '</td>' +
+        '<td style="text-align:left;font-size:10px;max-width:180px;white-space:normal">' + (r.remarks || '') + '</td></tr>';
+    });
+    html += '</tbody></table></div>';
   } else {
-    html = `<div class="modal-placeholder"><div class="icon">&#128100;</div><p><strong>Agent-Level Details</strong></p><div class="sub">Individual agent performance for ${b.batchId}<br>Data will be populated once the agent performance sheet is shared.</div></div>
-    <table class="agent-table" style="margin-top:16px"><thead><tr><th class="name-col">Agent Name</th><th>AHT</th><th>TSAT Chat</th><th>TSAT Voice</th><th>SOP</th><th>QA</th></tr></thead>
-    <tbody><tr><td colspan="6" style="text-align:center;color:#86868b;padding:20px">Agent-level data will appear here once the source sheet is connected.</td></tr></tbody></table>`;
+    // Fall back to legacy agentPerfData
+    const group = agentPerfData.batchGroups.find(g => g.batchId === b.batchId);
+    if(group && (group.chatAgents.length || group.voiceAgents.length)){
+      html = renderAgentTables(group);
+    } else {
+      html = '<div class="modal-placeholder"><div class="icon">&#128100;</div><p><strong>Agent-Level Details</strong></p><div class="sub">No agent data available for ' + b.batchId + '</div></div>';
+    }
   }
-  openModal(b.batchId + ' — Agent-Level Details', html);
+  openModal(b.batchId + ' \u2014 Agent-Level Details', html);
+}
+
+/* ---- Drill-down: Training Daily Quiz ---- */
+function showTrainingQuizModal(batchId){
+  const rows = (drilldownData.trainingQuiz || []).filter(r => r.batchId === batchId);
+  let html = '';
+  if(rows.length){
+    // Determine which quiz columns have data
+    const quizNums = [1,2,3,4,5,6,7,8,9];
+    const activeQuizzes = quizNums.filter(n => rows.some(r => r['quiz'+n] !== null && r['quiz'+n] !== undefined));
+    html = '<h4 style="font-size:13px;font-weight:700;margin-bottom:10px">Daily Quiz Results &mdash; ' + batchId + '</h4>';
+    html += '<div class="agent-table-wrap"><table class="agent-table"><thead><tr><th class="name-col">Agent Name</th><th>Start Date</th>';
+    activeQuizzes.forEach(n => { html += '<th>Quiz ' + n + '</th>'; });
+    html += '<th>Average (%)</th><th>Remarks</th></tr></thead><tbody>';
+    rows.forEach(r => {
+      html += '<tr><td class="name-cell">' + r.agentName + '</td><td>' + (r.startDate || '\u2014') + '</td>';
+      activeQuizzes.forEach(n => {
+        const v = r['quiz'+n];
+        const cls = (v !== null && v !== undefined) ? (v >= 80 ? 'above' : (v < 60 ? 'below' : '')) : '';
+        html += '<td class="achieved-cell ' + cls + '">' + (v !== null && v !== undefined ? v : '\u2014') + '</td>';
+      });
+      const avgCls = (r.avg !== null && r.avg !== undefined) ? (r.avg >= 80 ? 'above' : (r.avg < 60 ? 'below' : '')) : '';
+      html += '<td class="achieved-cell ' + avgCls + '" style="font-weight:700">' + (r.avg !== null && r.avg !== undefined ? r.avg + '%' : '\u2014') + '</td>';
+      html += '<td style="text-align:left;font-size:10px;max-width:200px;white-space:normal">' + (r.remarks || '') + '</td></tr>';
+    });
+    html += '</tbody></table></div>';
+  } else {
+    html = '<div class="modal-placeholder"><div class="icon">&#128221;</div><p><strong>Daily Quiz Results</strong></p><div class="sub">No quiz data available for ' + batchId + '</div></div>';
+  }
+  openModal(batchId + ' \u2014 Daily Quiz Results', html);
+}
+
+/* ---- Drill-down: Training Assessment ---- */
+function showAssessmentModal(batchId){
+  const rows = (drilldownData.trainingAssessment || []).filter(r => r.batchId === batchId);
+  let html = '';
+  if(rows.length){
+    html = '<h4 style="font-size:13px;font-weight:700;margin-bottom:10px">Assessment Results &mdash; ' + batchId + '</h4>';
+    html += '<div class="agent-table-wrap"><table class="agent-table"><thead><tr>' +
+      '<th class="name-col">Agent Name</th><th>Grand Quiz (%)</th><th>Product Assessment (%)</th><th>Communication Assessment (%)</th><th>Overall (%)</th><th>Status</th><th>Remarks</th>' +
+      '</tr></thead><tbody>';
+    rows.forEach(r => {
+      const overallCls = (r.overall >= 80) ? 'above' : (r.overall < 70 ? 'below' : '');
+      const statusCls = (r.status === 'Pass') ? 'above' : (r.status === 'Fail' ? 'below' : '');
+      html += '<tr><td class="name-cell">' + r.agentName + '</td>' +
+        '<td>' + fmt(r.grandQuiz) + '</td>' +
+        '<td>' + fmt(r.productAssessment) + '</td>' +
+        '<td>' + fmt(r.communicationAssessment) + '</td>' +
+        '<td class="achieved-cell ' + overallCls + '" style="font-weight:700">' + fmt(r.overall) + '</td>' +
+        '<td class="achieved-cell ' + statusCls + '" style="font-weight:700">' + fmt(r.status) + '</td>' +
+        '<td style="text-align:left;font-size:10px;max-width:200px;white-space:normal">' + (r.remarks || '') + '</td></tr>';
+    });
+    html += '</tbody></table></div>';
+  } else {
+    html = '<div class="modal-placeholder"><div class="icon">&#127942;</div><p><strong>Assessment Results</strong></p><div class="sub">No assessment data available for ' + batchId + '</div></div>';
+  }
+  openModal(batchId + ' \u2014 Assessment Results', html);
+}
+
+/* ---- Drill-down: Post-Nesting Weekly ---- */
+function showPostNestWeeklyModal(batchId){
+  const rows = (drilldownData.postNestWeekly || []).filter(r => r.batchId === batchId);
+  let html = '';
+  if(rows.length){
+    // Group by agent
+    const agents = {};
+    rows.forEach(r => { if(!agents[r.agentName]) agents[r.agentName] = []; agents[r.agentName].push(r); });
+    html = '<h4 style="font-size:13px;font-weight:700;margin-bottom:10px">Weekly Agent Performance &mdash; ' + batchId + '</h4>';
+    html += '<div class="agent-table-wrap"><table class="agent-table"><thead><tr>' +
+      '<th class="name-col">Agent Name</th><th>Week</th><th>AHT</th><th>TSAT Chat (%)</th><th>TSAT Voice (%)</th><th>SOP Compliance (%)</th><th>QA Score (%)</th><th>Remarks</th>' +
+      '</tr></thead><tbody>';
+    Object.keys(agents).forEach(name => {
+      const wk = agents[name];
+      wk.forEach((r, i) => {
+        html += '<tr>' + (i === 0 ? '<td class="name-cell" rowspan="' + wk.length + '">' + name + '</td>' : '') +
+          '<td>' + (r.week || '\u2014') + '</td>' +
+          '<td>' + fmt(r.aht) + '</td>' +
+          '<td>' + fmt(r.tsatChat) + '</td>' +
+          '<td>' + fmt(r.tsatVoice) + '</td>' +
+          '<td>' + fmt(r.sopCompliance) + '</td>' +
+          '<td>' + fmt(r.qaScore) + '</td>' +
+          '<td style="text-align:left;font-size:10px;max-width:180px;white-space:normal">' + (r.remarks || '') + '</td></tr>';
+      });
+    });
+    html += '</tbody></table></div>';
+  } else {
+    html = '<div class="modal-placeholder"><div class="icon">&#128200;</div><p><strong>Weekly Agent Performance</strong></p><div class="sub">No weekly performance data available for ' + batchId + '</div></div>';
+  }
+  openModal(batchId + ' \u2014 Weekly Agent Performance', html);
 }
 
 function renderAgentTables(group){
